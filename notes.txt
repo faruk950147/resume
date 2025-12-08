@@ -1,0 +1,11 @@
+<?php
+$baseUrl = "http://localhost:8000/";
+?>
+
+<link rel="stylesheet" href="<?= $baseUrl ?>assets/style.css">
+
+<!-- ✔ Full form: -->
+<?php echo $baseUrl; ?>
+
+<!-- ✔ Short form: -->
+<?= $baseUrl ?>
