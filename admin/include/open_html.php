@@ -17,6 +17,9 @@
 
     <!-- Custom styles for this template-->
     <link href="/admin/assets/css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <!-- data table  -->
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.5/css/dataTables.dataTables.min.css">
 
 </head>
 
