@@ -83,7 +83,7 @@ $result = $conn->query($query);
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
+                                    <a href="update.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
