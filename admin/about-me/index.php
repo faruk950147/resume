@@ -129,7 +129,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                             <input type="file" name="image" class="form-control">
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <button type="submit" class="btn btn-success form-conrol">Submit</button>
+                                            <button type="submit" class="btn btn-success form-control">Submit</button>
                                         </div>
                                     </div>
                                 </form>

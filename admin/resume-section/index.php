@@ -61,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <div class="card">
 
                             <div class="card-header">
-                                <h5>About Content</h5>
+                                <h5>Resume Content</h5>
 
                                 <?php if($success): ?>
                                     <p style="color:green;"><?= $success ?></p>
@@ -90,7 +90,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         </div>
 
                                         <div class="col-md-12 mb-3">
-                                            <button type="submit" class="btn btn-success form-conrol">Submit</button>
+                                            <button type="submit" class="btn btn-success form-control">Submit</button>
                                         </div>
 
                                     </div>

@@ -79,7 +79,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     </div>
 
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-success form-control">Update</button>
+                                        <button type="submit" class="btn btn-success form-control">Submit</button>
                                     </div>
                                 </form>
 
