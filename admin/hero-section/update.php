@@ -1,43 +1,10 @@
 <?php
 include_once "../include/open_html.php";
+// db config
 include_once "../config/db.php";
 
 // File Upload Function
-function fileUpload($image){
-    $path = '../assets/img/hero-section/';
-
-    if(!file_exists($path)){
-        mkdir($path, 0755, true);
-    }
-
-    if($image['error'] !== UPLOAD_ERR_OK){
-        return ["error" => "File upload error!"];
-    }
-
-    $allowed_ext = ['jpg','jpeg','png','webp'];
-    $ext = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-
-    if(!in_array($ext, $allowed_ext)){
-        return ["error" => "Invalid file type!"];
-    }
-
-    if(!getimagesize($image['tmp_name'])){
-        return ["error" => "Uploaded file is not a valid image!"];
-    }
-
-    if($image['size'] > 2 * 1024 * 1024){
-        return ["error" => "File size must be under 2MB!"];
-    }
-
-    $newName = bin2hex(random_bytes(16)) . "." . $ext;
-    $file_path = $path . $newName;
-
-    if(move_uploaded_file($image['tmp_name'], $file_path)){
-        return ["name" => $newName];
-    } else {
-        return ["error" => "File not uploaded!"];
-    }
-}
+include_once "../utilities/fileUpload.php";
 
 // Get Hero ID
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
