@@ -37,7 +37,7 @@ $result = $stmt->get_result();
                     if($result->num_rows > 0){
                         $sl = 1;
                         while($row = $result->fetch_assoc()): 
-                            $imgPath = '../assets/img/hero-section/' . $row['image'];
+                            $imgPath = '../assets/media/' . $row['image'];
                     ?>
                             <tr>
                                 <td><?= $sl++ ?></td>

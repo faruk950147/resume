@@ -1,7 +1,7 @@
 <?php
     // File Upload Function
     function fileUpload($image){
-        $path = '../assets/img/hero-section/';
+        $path = '../assets/media/';
 
         // Create folder if not exists
         if(!file_exists($path)){

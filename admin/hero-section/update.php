@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Keep old image if new not selected
         $new_name = $hero['image'];
 
-        // If new image uploaded
+        // If new image uploaded and old file delete
         if(isset($_FILES['image']) && $_FILES['image']['error'] === 0){
             $upload = fileUpload($_FILES['image']);
 
@@ -42,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $new_name = $upload['name'];
 
                 // Delete old image
-                $old_file = "../assets/img/hero-section/" . $hero['image'];
+                $old_file = "../assets/media/" . $hero['image'];
                 if(file_exists($old_file)){
                     unlink($old_file);
                 }
@@ -106,7 +106,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         <label class="form-label">Current Image</label><br>
 
                                         <?php if(!empty($hero['image'])): ?>
-                                            <img src="../assets/img/hero-section/<?= $hero['image'] ?>" 
+                                            <img src="../assets/media/<?= $hero['image'] ?>" 
                                                  width="100" height="100"
                                                  style="border:1px solid #ddd; padding:3px;">
                                         <?php else: ?>
@@ -116,12 +116,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Upload New Image (optional)</label>
+                                        <label class="form-label">Image</label>
                                         <input type="file" name="image" class="form-control">
                                     </div>
 
+
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-success form-control">Update</button>
+                                        <button type="submit" class="btn btn-success form-control">Submit</button>
                                     </div>
 
                                 </form>
