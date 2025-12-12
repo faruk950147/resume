@@ -2,11 +2,11 @@
 include_once "../include/open_html.php";
 include_once "../config/db.php";
 
-
-
 // Fetch hero sections
 $query = "SELECT * FROM hero_section ORDER BY id DESC";
-$result = $conn->query($query);
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <div id="wrapper">
@@ -36,34 +36,42 @@ $result = $conn->query($query);
                     <?php 
                     if($result->num_rows > 0){
                         $sl = 1;
-                        while($row = $result->fetch_assoc()){ ?>
+                        while($row = $result->fetch_assoc()): 
+                            $imgPath = '../assets/img/hero-section/' . $row['image'];
+                    ?>
                             <tr>
                                 <td><?= $sl++ ?></td>
                                 <td><?= htmlspecialchars($row['headline']) ?></td>
                                 <td><?= htmlspecialchars($row['title']) ?></td>
                                 <td>
-                                    <?php if(!empty($row['image'])): ?>
-                                        <img src="../assets/img/hero-section/<?= $row['image'] ?>" width="100">
-                                    <?php else: ?>
-                                        N/A
-                                    <?php endif; ?>
+                                    <?php 
+                                    if(!empty($row['image']) && file_exists($imgPath)) {
+                                        echo "<img src='$imgPath' width='100'>";
+                                    } else {
+                                        echo "N/A";
+                                    }
+                                    ?>
                                 </td>
                                 <td>
                                     <a href="update.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="update.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    
+                                    <!-- Delete without CSRF token -->
+                                    <form method="POST" action="delete.php" style="display:inline;" onsubmit="return confirm('Are you sure to delete?');">
+                                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
-                        <?php }
+                        <?php endwhile;
                     } else { ?>
                         <tr><td colspan="5" class="text-center">No records found.</td></tr>
                     <?php } ?>
                     </tbody>
                 </table>
-
             </div>
         </div>
 
