@@ -38,6 +38,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="/admin/hero-section/index.php">Hero Section</a>
                         <a class="collapse-item" href="/admin/about_me/index.php">About Me</a>
+                        <a class="collapse-item" href="/admin/skills-section/index.php">Skill Me</a>
                 </div>
 
             </li>
