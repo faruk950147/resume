@@ -29,18 +29,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $expert = trim($_POST['expert']);
 
     if(empty($title) || empty($expert)){
-        $msg = "<div class='alert alert-danger'>All fields are required!</div>";
+        $msg = "All fields are required!";
     } else {
         $stmt = $conn->prepare("UPDATE skill_section SET title = ?, expert = ? WHERE id = ?");
         $stmt->bind_param("ssi", $title, $expert, $skill_id);
 
         if($stmt->execute()){
-            $msg = "<div class='alert alert-success'>Skill Section Updated Successfully!</div>";
+            $msg = "Skill Section Updated Successfully!";
             // Refresh skill data
             $skill['title'] = $title;
             $skill['expert'] = $expert;
         } else {
-            $msg = "<div class='alert alert-danger'>Update Failed!</div>";
+            $msg = "Update Failed!";
         }
 
         $stmt->close();
@@ -63,7 +63,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             </div>
                             <div class="card-body">
 
-                                <?= $msg ?>
+                                <?php if(!empty($msg)): ?>
+                                    <div class="alert <?= strpos($msg, 'Failed') !== false || strpos($msg, 'required') !== false ? 'alert-danger' : 'alert-success' ?>">
+                                        <?= htmlspecialchars($msg) ?>
+                                    </div>
+                                <?php endif; ?>
 
                                 <form action="?id=<?= $skill_id ?>" method="post">
                                     <div class="mb-3">
