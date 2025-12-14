@@ -40,9 +40,10 @@
                         <a class="collapse-item" href="/admin/about-me/index.php">About Me</a>
                         <a class="collapse-item" href="/admin/skills-section/index.php">Skill</a>
                         <a class="collapse-item" href="/admin/resume-section/index.php">Resume Title</a>
-                        <a class="collapse-item" href="/admin/summeries/index.php">Summeries</a>
-                        <a class="collapse-item" href="/admin/professional-experience/index.php">Professional Experience</a>
-                        <a class="collapse-item" href="//index.php"></a>
+                        <a class="collapse-item" href="/admin/summeries/index.php">Resume Item 1</a>
+                        <a class="collapse-item" href="/admin/professional-experience/index.php">Resume Item 2</a>
+                        <a class="collapse-item" href="/admin/service-section/index.php">Service Title</a>
+                        <a class="collapse-item" href="/admin/service-items/index.php">Service Items</a>
                 </div>
                 
             </li>
