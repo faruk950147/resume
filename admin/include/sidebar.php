@@ -40,7 +40,9 @@
                         <a class="collapse-item" href="/admin/about-me/index.php">About Me</a>
                         <a class="collapse-item" href="/admin/skills-section/index.php">Skill</a>
                         <a class="collapse-item" href="/admin/resume-section/index.php">Resume Title</a>
-                        <a class="collapse-item" href="/admin/summeries/index.php">Resume Summeries</a>
+                        <a class="collapse-item" href="/admin/summeries/index.php">Summeries</a>
+                        <a class="collapse-item" href="/admin/professional-experience/index.php">Professional Experience</a>
+                        <a class="collapse-item" href="//index.php"></a>
                 </div>
                 
             </li>
