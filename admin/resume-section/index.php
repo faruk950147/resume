@@ -2,8 +2,7 @@
 include_once "../include/open_html.php";
 include_once "../config/db.php";
 
-$error = "";
-$success = "";
+$msg = '';
 
 // Get latest resume data (only 1 row)
 $result = $conn->query("SELECT * FROM resume ORDER BY id DESC LIMIT 1");
@@ -13,12 +12,11 @@ $resume = $result->fetch_assoc();
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $title = trim($_POST['title']);
 
-    // Input validation
     if(empty($title)){
-        $error = "Title field is required!";
+        $msg = "Title field is required!";
     }
 
-    if(empty($error)){
+    if(empty($msg)){
         if($resume){
             // UPDATE existing record
             $stmt = $conn->prepare("UPDATE resume SET title=? WHERE id=?");
@@ -31,21 +29,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $action = "created";
         }
 
-        // EXECUTE QUERY
         if($stmt->execute()){
-            $success = "Resume $action successfully!";
+            $msg = "Resume $action successfully!";
             $stmt->close();
 
             // Refresh latest data
             $result = $conn->query("SELECT * FROM resume ORDER BY id DESC LIMIT 1");
             $resume = $result->fetch_assoc();
         } else {
-            $error = "Database Error: " . $stmt->error;
+            $msg = "Database Error: " . $stmt->error;
         }
     }
 }
 ?>
-
 
 <div id="wrapper">
     <?php include_once "../include/sidebar.php"; ?>
@@ -63,12 +59,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <div class="card-header">
                                 <h5>Resume Content</h5>
 
-                                <?php if($success): ?>
-                                    <p style="color:green;"><?= $success ?></p>
-                                <?php endif; ?>
-
-                                <?php if($error): ?>
-                                    <p style="color:red;"><?= $error ?></p>
+                                <?php if(!empty($msg)): ?>
+                                    <p style="color:<?= strpos($msg, 'Error') !== false || strpos($msg, 'required') !== false ? 'red' : 'green' ?>;">
+                                        <?= $msg ?>
+                                    </p>
                                 <?php endif; ?>
                             </div>
 

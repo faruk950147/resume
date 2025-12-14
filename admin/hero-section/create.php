@@ -2,7 +2,6 @@
 include_once "../include/open_html.php";
 // db config
 include_once "../config/db.php";
-
 // File Upload Function
 include_once "../utilities/fileUpload.php";
 
@@ -15,36 +14,40 @@ $create_table = "CREATE TABLE IF NOT EXISTS hero_section (
 )";
 $conn->query($create_table);
 
-$error = "";
+$msg = "";
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $headline = trim($_POST['headline']);
     $title = trim($_POST['title']);
 
     if(empty($headline) || empty($title)){
-        $error = "All fields are required!";
+        $msg = "All fields are required!";
     } elseif(!isset($_FILES['image']) || empty($_FILES['image']['name'])){
-        $error = "Image is required!";
+        $msg = "Image is required!";
     } else {
         $upload = fileUpload($_FILES['image']);
 
         if(isset($upload['error'])){
-            $error = $upload['error'];
+            $msg = $upload['error'];
         } else {
             $uploadedFileName = $upload['name'];
 
             $stmt = $conn->prepare("INSERT INTO hero_section (headline, title, image) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $headline, $title, $uploadedFileName);
-            $stmt->execute();
-            $stmt->close();
 
-            header("Location: index.php");
-            exit;
+            if($stmt->execute()){
+                $msg = "Hero Content created successfully!";
+                $stmt->close();
+                // redirect after success (optional)
+                header("Location: index.php");
+                exit;
+            } else {
+                $msg = "Database Error: " . $stmt->error;
+            }
         }
     }
 }
 ?>
-
 
 <div id="wrapper">
     <?php include_once "../include/sidebar.php"; ?>
@@ -59,8 +62,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <div class="card-header"><h5>Create Hero Content</h5></div>
                             <div class="card-body">
 
-                                <?php if(!empty($error)): ?>
-                                    <div class="alert alert-danger"><?= $error ?></div>
+                                <?php if(!empty($msg)): ?>
+                                    <div class="alert <?= strpos($msg, 'Error') !== false || strpos($msg, 'required') !== false ? 'alert-danger' : 'alert-success' ?>">
+                                        <?= $msg ?>
+                                    </div>
                                 <?php endif; ?>
 
                                 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">

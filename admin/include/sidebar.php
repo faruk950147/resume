@@ -40,8 +40,9 @@
                         <a class="collapse-item" href="/admin/about-me/index.php">About Me</a>
                         <a class="collapse-item" href="/admin/skills-section/index.php">Skill</a>
                         <a class="collapse-item" href="/admin/resume-section/index.php">Resume Title</a>
+                        <a class="collapse-item" href="/admin/summeries/index.php">Resume Summeries</a>
                 </div>
-
+                
             </li>
 
             <!-- Divider -->

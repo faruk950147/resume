@@ -10,22 +10,26 @@ $create_table = "CREATE TABLE IF NOT EXISTS skill_section (
 )";
 $conn->query($create_table);
 
-$error = "";
+$msg = '';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $title = trim($_POST['title']);
     $expert = trim($_POST['expert']);
 
     if(empty($title) || empty($expert)){
-        $error = "All fields are required!";
+        $msg = "All fields are required!";
     } else {
         $stmt = $conn->prepare("INSERT INTO skill_section (title, expert) VALUES (?, ?)");
         $stmt->bind_param("ss", $title, $expert);
-        $stmt->execute();
-        $stmt->close();
 
-        header("Location: index.php");
-        exit;
+        if($stmt->execute()){
+            $msg = "Skill Content created successfully!";
+            $stmt->close();
+            header("Location: index.php");
+            exit;
+        } else {
+            $msg = "Database Error: " . $stmt->error;
+        }
     }
 }
 ?>
@@ -43,8 +47,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <div class="card-header"><h5>Create Skill Content</h5></div>
                             <div class="card-body">
 
-                                <?php if(!empty($error)): ?>
-                                    <div class="alert alert-danger"><?= $error ?></div>
+                                <?php if(!empty($msg)): ?>
+                                    <div class="alert <?= strpos($msg, 'Error') !== false || strpos($msg, 'required') !== false ? 'alert-danger' : 'alert-success' ?>">
+                                        <?= $msg ?>
+                                    </div>
                                 <?php endif; ?>
 
                                 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">

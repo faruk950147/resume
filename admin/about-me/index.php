@@ -1,16 +1,15 @@
 <?php
 include_once "../include/open_html.php";
 include_once "../config/db.php";
-// File Upload Function
 include_once "../utilities/fileUpload.php";
-$error = "";
-$success = "";
 
-// Fetch the latest record (if any)
+$msg = ''; // single message variable
+
+// Fetch the latest record
 $result = $conn->query("SELECT * FROM about_me ORDER BY id DESC LIMIT 1");
 $about_me = $result->fetch_assoc();
 
-// Handle POST request for insert or update
+// Handle POST request
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $name = trim($_POST['name']);
     $profession = trim($_POST['profession']);
@@ -18,19 +17,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $phone = trim($_POST['phone']);
     $description = trim($_POST['description']);
 
-    // Keep old image if new not selected
     $new_name = $about_me['image'] ?? '';
 
     // Handle new image upload
     if(isset($_FILES['image']) && $_FILES['image']['error'] === 0){
-        $upload = fileUpload($_FILES['image']); // Make sure fileUpload returns ['name'] or ['error']
-
+        $upload = fileUpload($_FILES['image']);
         if(isset($upload['error'])){
-            $error = $upload['error'];
+            $msg = "Error: " . $upload['error'];
         } else {
             $new_name = $upload['name'];
-
-            // Delete old image if exists
             if(!empty($about_me['image'])){
                 $old_file = "../assets/media/" . $about_me['image'];
                 if(file_exists($old_file)){
@@ -40,33 +35,31 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
     }
 
-    if(empty($error)){
-        if($about_me){ 
-            // Update existing record using prepared statement
+    // If no error, insert or update
+    if(empty($msg)){
+        if($about_me){
             $stmt = $conn->prepare("UPDATE about_me SET name=?, profession=?, email=?, phone=?, description=?, image=? WHERE id=?");
             $stmt->bind_param("ssssssi", $name, $profession, $email, $phone, $description, $new_name, $about_me['id']);
             $action = "updated";
-        } else { 
-            // Insert new record using prepared statement
+        } else {
             $stmt = $conn->prepare("INSERT INTO about_me (name, profession, email, phone, description, image) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("ssssss", $name, $profession, $email, $phone, $description, $new_name);
             $action = "created";
         }
 
         if($stmt->execute()){
-            $success = "About Me $action successfully!";
+            $msg = "About Me $action successfully!";
             $stmt->close();
 
-            // Refresh $about_me
+            // Refresh latest record
             $result = $conn->query("SELECT * FROM about_me ORDER BY id DESC LIMIT 1");
             $about_me = $result->fetch_assoc();
         } else {
-            $error = "Database Error: " . $stmt->error;
+            $msg = "Database Error: " . $stmt->error;
         }
     }
 }
 ?>
-
 
 <div id="wrapper">
     <?php include_once "../include/sidebar.php"; ?>
@@ -80,11 +73,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <div class="card">
                             <div class="card-header">
                                 <h5>About Content</h5>
-                                <?php if($success): ?>
-                                    <p style="color:green;"><?= $success ?></p>
-                                <?php endif; ?>
-                                <?php if($error): ?>
-                                    <p style="color:red;"><?= $error ?></p>
+                                <?php if(!empty($msg)): ?>
+                                    <p style="color:<?= strpos($msg, 'Error') !== false ? 'red' : 'green' ?>;"><?= $msg ?></p>
                                 <?php endif; ?>
                             </div>
                             <div class="card-body">
