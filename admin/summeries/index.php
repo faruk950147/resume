@@ -47,7 +47,8 @@ $result = $stmt->get_result();
                         <tr>
                             <td><?= $sl++ ?></td>
                             <td><?= htmlspecialchars($row['title']) ?></td>
-                            <td><?= htmlspecialchars(substr($row['bio'], 0, 50)) ?>...</td>
+                            <td title="<?= htmlspecialchars($row['bio']) ?>"><?= htmlspecialchars(substr($row['bio'], 0, 50)) ?>...</td>
+                            <td title="<?= htmlspecialchars($row['address']) ?>"><?= htmlspecialchars(substr($row['address'], 0, 50)) ?>...</td>
                             <td><?= htmlspecialchars($row['phone']) ?></td>
                             <td><?= htmlspecialchars($row['email']) ?></td>
                             <td>
