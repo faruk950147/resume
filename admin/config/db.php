@@ -1,20 +1,26 @@
 <?php
-$host = "localhost";
-$username = "root";
-$password = "";
-$db_name = "resume";
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+    $db_name = "resume";
 
-$conn = new mysqli($host, $username, $password);
+    /* 1. Server connection (without DB) */
+    $conn = new mysqli($host, $username, $password);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-$conn->query("CREATE DATABASE IF NOT EXISTS $db_name");
+    /* 2. Create database */
+    $sql = "CREATE DATABASE IF NOT EXISTS `$db_name`";
+    if (!$conn->query($sql)) {
+        die("Database creation failed: " . $conn->error);
+    }
 
-$conn = new mysqli($host, $username, $password, $db_name);
+    /* 3. Connect with database */
+    $conn = new mysqli($host, $username, $password, $db_name);
 
-if ($conn->connect_error) {
-    die("DB Connection failed: " . $conn->connect_error);
-}
+    if ($conn->connect_error) {
+        die("DB Connection failed: " . $conn->connect_error);
+    }
 ?>
