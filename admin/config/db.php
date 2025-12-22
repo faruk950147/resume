@@ -4,23 +4,20 @@
     $password = "";
     $db_name = "resume";
 
-    /* 1. Server connection (without DB) */
+    /* Connect to MySQL */
     $conn = new mysqli($host, $username, $password);
 
+    /* Connection check */
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    /* 2. Create database */
+    /* Create database */
     $sql = "CREATE DATABASE IF NOT EXISTS `$db_name`";
-    if (!$conn->query($sql)) {
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->select_db($db_name);
+    } else {
         die("Database creation failed: " . $conn->error);
-    }
-
-    /* 3. Connect with database */
-    $conn = new mysqli($host, $username, $password, $db_name);
-
-    if ($conn->connect_error) {
-        die("DB Connection failed: " . $conn->connect_error);
     }
 ?>
